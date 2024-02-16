@@ -1,0 +1,6 @@
+# roles/dump-mysql/vars/main.yaml
+
+backup_dir: "/home/myuser/backup/db"
+timestamp: "{{ ansible_date_time.date }}_{{ ansible_date_time.hour }}{{ ansible_date_time.minute }}{{ ansible_date_time.second }}"
+backup_file: "{{ backup_dir }}/{{ hostvars[inventory_hostname] }}/{{ db_name }}-{{ timestamp }}.sql"
+dump_server_host: "10.0.0.10"

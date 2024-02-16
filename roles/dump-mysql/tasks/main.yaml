@@ -1,0 +1,21 @@
+# roles/dump-mysql/tasks/main.yaml
+---
+
+- name: Install MySQL client on dump-server
+  ansible.builtin.package:
+    name: mysql
+    state: present
+  delegate_to: "{{ dump_server_host }}"
+
+- name: Ensure backup directory exists on dump-server
+  ansible.builtin.file:
+    path: "{{ backup_dir }}/{{ inventory_hostname }}"
+    state: directory
+  delegate_to: "{{ dump_server_host }}"
+
+- name: Dump MariaDB database using MySQL client on dump-server
+  ansible.builtin.shell: >
+    mysqldump -h {{ ansible_host }} -P {{ db_port }} -u {{ db_user }} -p{{ db_pass }} --all-databases > "{{ backup_dir }}/{{ inventory_hostname }}/{{ db_database }}-{{ timestamp }}.sql"
+  args:
+    executable: /bin/bash
+  delegate_to: "{{ dump_server_host }}"

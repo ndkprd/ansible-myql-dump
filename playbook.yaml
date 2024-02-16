@@ -1,0 +1,8 @@
+---
+- name: Dump MySQL Databases
+  hosts: db-servers
+  become: true
+  gather_facts: yes
+
+  roles:
+    - dump-mysql
